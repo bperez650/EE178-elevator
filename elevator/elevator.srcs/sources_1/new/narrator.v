@@ -64,30 +64,30 @@ module narrator (
                 4'b0001: //floor
                     case(current_floor)
                         1 :  case (counter[6:2])
-                              0:  data = 6'h04;
-                              1:  data = 6'h2E; 
-                              2:  data = 6'h0F; 
-                              3:  data = 6'h0B; 
-                              default: data = 6'h04;
+                              0:  data <= 6'h04;
+                              1:  data <= 6'h2E; 
+                              2:  data <= 6'h0F; 
+                              3:  data <= 6'h0B; 
+                              default: data <= 6'h04;
                             endcase                        
                         2 :  case (counter[6:2])
-                              0:  data = 6'h04;
-                              1:  data = 6'h0D; 
-                              2:  data = 6'h1F; 
-                              default: data = 6'h04;
+                              0:  data <= 6'h04;
+                              1:  data <= 6'h0D; 
+                              2:  data <= 6'h1F; 
+                              default: data <= 6'h04;
                             endcase
                         3 :  case (counter[6:2])
-                              0:  data = 6'h04;
-                              1:  data = 6'h1D; 
-                              2:  data = 6'h0E;
-                              3:  data = 6'h13; 
-                              default: data = 6'h04;
+                              0:  data <= 6'h04;
+                              1:  data <= 6'h1D; 
+                              2:  data <= 6'h0E;
+                              3:  data <= 6'h13; 
+                              default: data <= 6'h04;
                             endcase
                         4 :  case (counter[6:2])
-                              0:  data = 6'h04;
-                              1:  data = 6'h28; 
-                              2:  data = 6'h28; 
-                              3:  data = 6'h3A; 
+                              0:  data <= 6'h04;
+                              1:  data <= 6'h28; 
+                              2:  data <= 6'h28; 
+                              3:  data <= 6'h3A; 
                               default: data = 6'h04;
                             endcase
                         endcase//floor
@@ -95,42 +95,42 @@ module narrator (
 //                4'b0010 : //up/down
 //                    case(move_st)
 //                        0 : case (counter[6:2]) //going down
-//                              0:  data = 6'h04;
-//                              1:  data = 6'h21; 
-//                              2:  data = 6'h20; 
-//                              3:  data = 6'h0B; 
-//                              default: data = 6'h04;
+//                              0:  data <= 6'h04;
+//                              1:  data <= 6'h21; 
+//                              2:  data <= 6'h20; 
+//                              3:  data <= 6'h0B; 
+//                              default: data <= 6'h04;
 //                            endcase                        
 //                        1 :  case (counter[6:2])    //going up
-//                              0:  data = 6'h04;
-//                              1:  data = 6'h0F; 
-//                              2:  data = 6'h01; 
-//                              3:  data = 6'h02; 
-//                              4:  data = 6'h09;
-//                              default: data = 6'h04;
+//                              0:  data <= 6'h04;
+//                              1:  data <= 6'h0F; 
+//                              2:  data <= 6'h01; 
+//                              3:  data <= 6'h02; 
+//                              4:  data <= 6'h09;
+//                              default: data <= 6'h04;
 //                            endcase
 //                    endcase //up/down
                             
                 4'b0100 : //door
                     case(door_st)
                         0 : case (counter[6:2]) //door closed
-                              0:  data = 6'h04;
-                              1:  data = 6'h2A; 
-                              2:  data = 6'h2D; 
-                              3:  data = 6'h35; 
-                              4:  data = 6'h37;
-                              default: data = 6'h04;
+                              0:  data <= 6'h04;
+                              1:  data <= 6'h2A; 
+                              2:  data <= 6'h2D; 
+                              3:  data <= 6'h35; 
+                              4:  data <= 6'h37;
+                              default: data <= 6'h04;
                             endcase                        
                         1 :  case (counter[6:2])    //door open
-                              0:  data = 6'h04;
-                              1:  data = 6'h35; 
-                              2:  data = 6'h09; 
-                              3:  data = 6'h07; 
-                              4:  data = 6'h0B;
-                              default: data = 6'h04;
+                              0:  data <= 6'h04;
+                              1:  data <= 6'h35; 
+                              2:  data <= 6'h09; 
+                              3:  data <= 6'h07; 
+                              4:  data <= 6'h0B;
+                              default: data <= 6'h04;
                             endcase
                     endcase //door
-                default : data = 6'h04;
+                default : data <= 6'h04;
             endcase//call_st
             end
         default : restart <= 1;

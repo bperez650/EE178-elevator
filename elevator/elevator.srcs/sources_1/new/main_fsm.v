@@ -104,23 +104,23 @@ assign request = up_f1||up_f2||up_f3||down_f4||down_f3||down_f2||F1||F2||F3||F4;
 //timer
 always @(posedge clk) begin
     if(rst) begin
-        timer = 0;
-        timer2 = 0; end
+        timer <= 0;
+        timer2 <= 0; end
     else begin
         if (timer == 25000000) begin 
-            timer2 = timer2 + 1;  
-            timer = 0; end
-        else timer = timer + 1; 
+            timer2 <= timer2 + 1;  
+            timer <= 0; end
+        else timer <= timer + 1; 
     end
 end
         
 
 //final floor calculation
 always @(posedge request) begin
-    if(F1||up_f1) final_floor = 3'b001;
-    else if(F2||up_f2||down_f2) final_floor = 3'b010;
-    else if(F3||up_f3||down_f3) final_floor = 3'b011;
-    else if(F4||down_f4) final_floor = 3'b100; end
+    if(F1||up_f1) final_floor <= 3'b001;
+    else if(F2||up_f2||down_f2) final_floor <= 3'b010;
+    else if(F3||up_f3||down_f3) final_floor <= 3'b011;
+    else if(F4||down_f4) final_floor <= 3'b100; end
 
 //main state machine
 always @(posedge clk) begin
@@ -244,11 +244,11 @@ always @(posedge clk) begin
             
         reset : begin
             if(current_floor == final_floor) begin
-                var = 5;
-                stop = 1; end
+                var <= 5;
+                stop <= 1; end
             else begin
-                var = 10;
-                stop = 0; end
+                var <= 10;
+                stop <= 0; end
             call <= 0;
             rst <= 0; 
             move_down_LED <= 0;
