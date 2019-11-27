@@ -35,13 +35,13 @@ output reg [3:0] call
 localparam [3:0] idle = 4'b0000;
 localparam [3:0] request_ISR = 4'b0001;
 localparam [3:0] slow_start = 4'b0010;
-localparam [3:0] move10 = 4'b0011;
+localparam [3:0] fast5 = 4'b0011;
 localparam [3:0] floor_inc = 4'b0100;
 localparam [3:0] reset = 4'b0101;
 localparam [3:0] moveV = 4'b0110;
 localparam [3:0] reset1 = 4'b0111;
 localparam [3:0] reset2 = 4'b1000;
-localparam [3:0] move20 = 4'b1001;
+localparam [3:0] fast10 = 4'b1001;
 localparam [3:0] slow_finish = 4'b1010;
 localparam [3:0] open_door = 4'b1011;
 localparam [3:0] waiting = 4'b1100;
@@ -59,6 +59,7 @@ reg down = 0;
 reg rst2 = 0;
 reg [4:0] var = 0;
 reg stop = 0;
+reg counter = 0;
 
 initial begin
 current_floor = 1;
@@ -130,11 +131,11 @@ always @(posedge clk) begin
         request_ISR : if(current_floor == final_floor) state <= open_door;
             else state <= slow_start;
             
-        slow_start : if(timer2 == 5) state <= move10;
+        slow_start : if(timer2 == 10) state <= fast5;
             else state <= slow_start;
                       
-        move10 : if(timer2 == 20) state <= floor_inc;
-            else state <= move10;
+        fast5 : if(timer2 == 15) state <= floor_inc;
+            else state <= fast5;
         
         floor_inc : state <= reset;
         
@@ -144,14 +145,24 @@ always @(posedge clk) begin
             else if(timer2==var && !stop) state <= reset2;
             else state <= moveV;
                                                   
-        reset1 : state <= slow_finish;
+        reset1 : if(counter) begin
+                state <= slow_finish;
+                counter <= 0; end
+            else begin
+                state <= reset1;
+                counter <= counter + 1; end
             
-        reset2 : state <= move20;
+        reset2 : if(counter) begin
+                state <= fast10;
+                counter <= 0; end
+            else begin
+                state <= reset2;
+                counter <= counter + 1; end
         
-        move20 : if(timer2 == 20) state <= floor_inc;
-            else state <= move20;
+        fast10 : if(timer2 == 10) state <= floor_inc;
+            else state <= fast10;
         
-        slow_finish: if(timer2 == 5) state <= open_door;
+        slow_finish: if(timer2 == 10) state <= open_door;
             else state <= slow_finish;
         
         open_door : state <= waiting;
@@ -204,10 +215,10 @@ always @(posedge clk) begin
             else begin
                 move_up_LED <= 0;
                 move_down_LED <= 1; end
-            flashing_LEDs <= timer2[0]; 
+            flashing_LEDs <= timer2[1]; 
             door_status <= 0; end
             
-        move10 : begin
+        fast5 : begin
             call <= 4'b0000;
             rst <= 0;
             if(up) begin
@@ -216,7 +227,7 @@ always @(posedge clk) begin
             else begin
                 move_up_LED <= 0;
                 move_down_LED <= 1; end
-            flashing_LEDs <= timer2[1]; 
+            flashing_LEDs <= timer2[0]; 
             door_status <= 0; end
 
         floor_inc : begin
@@ -233,10 +244,10 @@ always @(posedge clk) begin
             
         reset : begin
             if(current_floor == final_floor) begin
-                var = 10;
+                var = 5;
                 stop = 1; end
             else begin
-                var = 20;
+                var = 10;
                 stop = 0; end
             call <= 0;
             rst <= 0; 
@@ -254,7 +265,7 @@ always @(posedge clk) begin
             else begin
                 move_up_LED <= 0;
                 move_down_LED <= 1; end
-            flashing_LEDs <= timer2[1]; 
+            flashing_LEDs <= timer2[0]; 
             door_status <= 0; end
             
         reset1 : begin
@@ -273,7 +284,7 @@ always @(posedge clk) begin
             door_status <= 0; 
             flashing_LEDs <= 0; end
             
-        move20 : begin 
+        fast10 : begin 
             call <= 4'b0000;
             rst <= 0;
             if(up) begin
@@ -282,7 +293,7 @@ always @(posedge clk) begin
             else begin
                 move_up_LED <= 0;
                 move_down_LED <= 1; end
-            flashing_LEDs <= timer2[1]; 
+            flashing_LEDs <= timer2[0]; 
             door_status <= 0; end
             
         slow_finish : begin
@@ -294,12 +305,12 @@ always @(posedge clk) begin
             else begin
                 move_up_LED <= 0;
                 move_down_LED <= 1; end
-            flashing_LEDs <= timer2[0]; 
+            flashing_LEDs <= timer2[1]; 
             door_status <= 0; end
 
         open_door : begin
             call <= 4'b0100;
-            rst <= 0; 
+            rst <= 1; 
             move_down_LED <= 0;
             move_up_LED <= 0; 
             door_status <= 1;
