@@ -16,6 +16,7 @@ module narrator (
   input wire [2:0] current_floor,
   input wire door_status,
   //input wire up,
+  input wire sos,
   output wire speaker
   );
   
@@ -40,7 +41,7 @@ module narrator (
 
   always @(posedge clk) begin
       case(state1)
-        0 : if(call) begin 
+        0 : if(call||sos) begin 
                 state1 <= 1; 
                 call_st <= call; 
                 //move_st <= up;  
@@ -60,6 +61,24 @@ module narrator (
         0 : restart <= 1;
         1 : restart <= 0;
         2 : begin
+        if(sos) 
+             case (counter[6:2])
+                  0:  data <= 6'h04;
+                  1:  data <= 6'h07; 
+                  2:  data <= 6'h07; 
+                  3:  data <= 6'h37; 
+                  4:  data <= 6'h37;
+                  
+                  5:  data <= 6'h04; 
+                  6:  data <= 6'h35;
+                  
+                  7:  data <= 6'h07; 
+                  8:  data <= 6'h07; 
+                  9:  data <= 6'h37; 
+                  10:  data <= 6'h37; 
+                  default: data <= 6'h04;
+                endcase         
+        else
             case(call_st)
                 4'b0001: //floor
                     case(current_floor)
@@ -88,7 +107,7 @@ module narrator (
                               1:  data <= 6'h28; 
                               2:  data <= 6'h28; 
                               3:  data <= 6'h3A; 
-                              default: data = 6'h04;
+                              default: data <= 6'h04;
                             endcase
                         endcase//floor
                         

@@ -1,3 +1,5 @@
+
+  
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
@@ -107,7 +109,7 @@ always @(posedge clk) begin
         timer <= 0;
         timer2 <= 0; end
     else begin
-        if (timer == 25000000) begin 
+        if (timer >= 25000000) begin 
             timer2 <= timer2 + 1;  
             timer <= 0; end
         else timer <= timer + 1; 
@@ -347,3 +349,4 @@ end
 
 
 endmodule
+
