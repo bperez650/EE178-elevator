@@ -30,8 +30,8 @@ module narrator (
   wire busy;
   reg restart = 1;
   reg [1:0] state1 = 0;
-  reg [3:0] call_st;
-  reg door_st;
+  reg [3:0] call_st = 0;
+  reg door_st = 0;
   //reg move_st;
 
   always @(posedge clk) begin

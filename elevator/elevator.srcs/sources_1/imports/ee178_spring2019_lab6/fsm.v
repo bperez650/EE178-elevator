@@ -1,3 +1,5 @@
+
+  
 // File: fsm.v
 // This is the FSM module for EE178 Lab #6.
 
@@ -73,3 +75,4 @@ end
     
       
 endmodule
+

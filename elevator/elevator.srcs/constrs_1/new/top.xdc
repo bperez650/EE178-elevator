@@ -52,3 +52,9 @@ set_property PACKAGE_PIN H16 [get_ports clk]
 # Constraints for SPEAKER
 set_property PACKAGE_PIN G18 [get_ports {speaker}]
 set_property IOSTANDARD LVCMOS33 [get_ports {speaker}]
+
+set_property PACKAGE_PIN T14 [get_ports {sos}]
+set_property IOSTANDARD LVCMOS33 [get_ports {sos}]
+
+set_property PACKAGE_PIN Y14 [get_ports {sos_led}]
+set_property IOSTANDARD LVCMOS33 [get_ports {sos_led}]

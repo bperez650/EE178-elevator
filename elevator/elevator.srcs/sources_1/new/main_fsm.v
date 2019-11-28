@@ -118,7 +118,7 @@ end
         
 
 //final floor calculation
-always @(posedge request) begin
+always @(posedge clk) begin
     if(F1||up_f1) final_floor <= 3'b001;
     else if(F2||up_f2||down_f2) final_floor <= 3'b010;
     else if(F3||up_f3||down_f3) final_floor <= 3'b011;
